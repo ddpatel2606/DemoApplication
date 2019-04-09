@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.activity_add_note.*
 
 
 
+
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -35,12 +37,27 @@ class AddNoteActivity : AppCompatActivity(){
 
     private var noteDatabase: NoteDatabase? = null
     private var note: Note? = null
+    private var isEdit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
 
         noteDatabase = NoteDatabase.getInstance(this)
+
+        if(intent.extras != null && intent.extras.getParcelable<Note>("note") != null) {
+            note = intent.extras.getParcelable<Note>("note")
+
+            isEdit = true
+            email.setText(note?.title)
+            password.setText(note?.content)
+            setTitle("EditNote")
+            email_sign_in_button.setText("Save")
+        }else
+        {
+            isEdit = false
+        }
+
 
         // Set up the login form.
         populateAutoComplete()
@@ -202,12 +219,20 @@ class AddNoteActivity : AppCompatActivity(){
             // TODO: attempt authentication against a network service.
 
             // fetch data and create note object
-            note = Note(
-                mEmail,
-                mPassword
-            )
+            if (isEdit)
+            {
+                note?.title = mEmail
+                note?.content =mPassword
 
-            noteDatabase?.noteDao?.insert(note)
+                noteDatabase?.getNoteDao()?.update(note)
+            } else {
+
+                note = Note(
+                    mEmail,
+                    mPassword
+                )
+                noteDatabase?.noteDao?.insert(note)
+            }
 
             return true
         }
@@ -241,9 +266,6 @@ class AddNoteActivity : AppCompatActivity(){
 
     companion object {
 
-        /**
-         * Id to identity READ_CONTACTS permission request.
-         */
         private val REQUEST_WRITE_STORAGE= 0
 
     }

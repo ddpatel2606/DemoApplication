@@ -1,8 +1,10 @@
 package com.mydemoapplication
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +15,7 @@ import com.mydemoapplication.db.NoteDatabase
 import kotlinx.android.synthetic.main.activity_note_listing.*
 
 
-class NoteListingActivity : AppCompatActivity() {
+class NoteListingActivity : AppCompatActivity() , NotesAdapter.OnNoteItemClick {
 
 
     private var recyclerView: RecyclerView? = null
@@ -45,6 +47,33 @@ class NoteListingActivity : AppCompatActivity() {
         getNoteList!!.execute(null as Void?)
     }
 
+    override fun onNoteClick(pos: Int) {
+        AlertDialog.Builder(this)
+            .setTitle("Select Options")
+            .setItems(arrayOf("Delete", "Edit"), DialogInterface.OnClickListener { dialogInterface, i ->
+                when (i) {
+                    0 -> {
+                        noteDatabase?.getNoteDao()?.delete(notes?.get(pos))
+                        notes?.removeAt(pos)
+                        listVisibility()
+                    }
+                    1 -> {
+                        startActivityForResult(
+                            Intent(
+                                this,
+                                AddNoteActivity::class.java
+                            ).putExtra("note", notes?.get(pos)),
+                            100
+                        )
+                    }
+                }
+            }).show()
+    }
+
+    private fun listVisibility() {
+        notesAdapter?.notifyDataSetChanged()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -65,7 +94,6 @@ class NoteListingActivity : AppCompatActivity() {
             // TODO: attempt authentication against a network service.
 
             // fetch data
-
             return noteDatabase?.getNoteDao()?.all;
         }
 
@@ -76,7 +104,7 @@ class NoteListingActivity : AppCompatActivity() {
             {
                 notes = success
                 // create and set the adapter on RecyclerView instance to display list
-                notesAdapter = NotesAdapter(notes,applicationContext)
+                notesAdapter = NotesAdapter(notes,this@NoteListingActivity,this@NoteListingActivity)
                 recyclerView?.setAdapter(notesAdapter)
             }
         }

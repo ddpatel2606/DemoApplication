@@ -21,13 +21,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.BeanHolder> 
     private List<Note> list;
     private Context context;
     private LayoutInflater layoutInflater;
-    //private OnNoteItemClick onNoteItemClick;
+    private OnNoteItemClick onNoteItemClick;
 
-    public NotesAdapter(List<Note> list,Context context) {
+    public NotesAdapter(List<Note> list,Context context,OnNoteItemClick onNoteItemClick) {
         layoutInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
-        //this.onNoteItemClick = (OnNoteItemClick) context;
+        this.onNoteItemClick = onNoteItemClick;
     }
 
 
@@ -62,7 +62,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.BeanHolder> 
 
         @Override
         public void onClick(View view) {
-           // onNoteItemClick.onNoteClick(getAdapterPosition());
+           onNoteItemClick.onNoteClick(getAdapterPosition());
         }
     }
 
