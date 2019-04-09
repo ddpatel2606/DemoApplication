@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MyDemoApplication</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_add_note">AddNote</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Title</string>
+    <string name="prompt_password">Note</string>
+    <string name="action_sign_in">Add Notes</string>
+    <string name="action_sign_in_short">Add Notes</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="title_activity_note_listing">NoteListingActivity</string>
+</resources>
