@@ -1,6 +1,6 @@
 package com.mydemoapplication
 
-import android.Manifest.permission.READ_CONTACTS
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
@@ -65,15 +65,15 @@ class AddNoteActivity : AppCompatActivity(){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true
         }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return true
         }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
+        if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) {
             Snackbar.make(email, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                 .setAction(android.R.string.ok,
-                    { requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS) })
+                    { requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), REQUEST_WRITE_STORAGE) })
         } else {
-            requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
+            requestPermissions(arrayOf(WRITE_EXTERNAL_STORAGE), REQUEST_WRITE_STORAGE)
         }
         return false
     }
@@ -85,7 +85,7 @@ class AddNoteActivity : AppCompatActivity(){
         requestCode: Int, permissions: Array<String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
+        if (requestCode == REQUEST_WRITE_STORAGE) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete()
             }
@@ -244,7 +244,7 @@ class AddNoteActivity : AppCompatActivity(){
         /**
          * Id to identity READ_CONTACTS permission request.
          */
-        private val REQUEST_READ_CONTACTS = 0
+        private val REQUEST_WRITE_STORAGE= 0
 
     }
 }

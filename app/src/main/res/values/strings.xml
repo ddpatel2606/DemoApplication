@@ -8,6 +8,6 @@
     <string name="action_sign_in">Add Notes</string>
     <string name="action_sign_in_short">Add Notes</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+    <string name="permission_rationale">"Storage permissions are needed for save database."</string>
     <string name="title_activity_note_listing">NoteListingActivity</string>
 </resources>
